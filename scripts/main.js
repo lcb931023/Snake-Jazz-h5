@@ -138,6 +138,14 @@ const snake = [
   {x: 170, y: 200},
   {x: 160, y: 200}
 ]
+// array for rendering colorful snake body
+const snakePalette = [
+  "#a3bcd0",
+  "#a3bcd0",
+  "#a3bcd0",
+  "#a3bcd0",
+  "#a3bcd0",
+]
 let score = 0
 // True if changing direction
 let changing_direction = false;
@@ -170,8 +178,9 @@ function clear_board() {
 function drawSnake() {
   snake.forEach(drawSnakePart)
 }
-function drawSnakePart(snakePart){
-  ctx.fillStyle = '#a3bcd0';
+function drawSnakePart(snakePart, i){
+
+  ctx.fillStyle = snakePalette[i]
   ctx.fillRect(snakePart.x, snakePart.y, 10, 10);
 }
 function move_snake() {
@@ -187,6 +196,8 @@ function move_snake() {
       has_eaten_food = true
       // add the food's corresponding line type to tracker
       addRandomLine(food.type)
+      // add the food's color to snake body
+      snakePalette.splice(snakePalette.length - 4, 0, food.color)
       // remove the food
       allFood.splice(i, 1)
       // early termination (important!)
@@ -232,18 +243,22 @@ function change_direction(event) {
   if (keyPressed === LEFT_KEY && !goingRight) {
     dx = -10;
     dy = 0;
+    // piano.triggerAttackRelease("G4", "8t", "@16n")
   }
   if (keyPressed === UP_KEY && !goingDown) {
     dx = 0;
     dy = -10;
+    // piano.triggerAttackRelease("F4", "8t", "@16n")
   }
   if (keyPressed === RIGHT_KEY && !goingLeft) {
     dx = 10;
     dy = 0;
+    // piano.triggerAttackRelease("A4", "8t", "@16n")
   }
   if (keyPressed === DOWN_KEY && !goingUp) {
     dx = 0;
     dy = 10;
+    // piano.triggerAttackRelease("C5", "8t", "@16n")
   }
 }
 
