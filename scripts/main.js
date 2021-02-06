@@ -157,7 +157,7 @@ let dx = 10;
 // Vertical velocity
 let dy = 0;
 
-const FOOD_COUNT = 10
+const FOOD_COUNT = 100
 
 for (let index = 0; index < FOOD_COUNT; index++) {
   gen_food()
