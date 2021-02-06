@@ -16,6 +16,11 @@ const sequencer = new Tone.Sequence(
 let beatCounter = 0
 
 function onBeat (time, index) {
+  // Control game rendering timing
+  Tone.Draw.schedule(function(){
+    gameLoop()
+  }, time)
+
   // TODO handle situation when the tracker has more than 64 beats
   
   beatCounter ++; // the number of 16n notes played so far. Starts with 1
@@ -117,4 +122,159 @@ const piano = new Tone.Sampler({
 	}
 }).toDestination();
 
-// const piano = new Tone.Synth().toDestination();
+/////////////// SNAKE GAME /////////////
+const canvas = document.getElementById("canvas")
+const ctx = canvas.getContext("2d")
+const snake = [
+  {x: 200, y: 200},
+  {x: 190, y: 200},
+  {x: 180, y: 200},
+  {x: 170, y: 200},
+  {x: 160, y: 200}
+]
+let score = 0
+// True if changing direction
+let changing_direction = false;
+// allFood
+const allFood = []
+// Horizontal velocity
+let dx = 10;
+// Vertical velocity
+let dy = 0;
+
+gen_food()
+gen_food()
+gen_food()
+gen_food()
+function gameLoop() {
+  if (has_game_ended()) return;
+
+  changing_direction = false;
+  clear_board();
+  drawAllFood();
+  move_snake();
+  drawSnake();
+
+}
+
+function clear_board() {
+  ctx.fillStyle = "#32304c";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+function drawSnake() {
+  snake.forEach(drawSnakePart)
+}
+function drawSnakePart(snakePart){
+  ctx.fillStyle = '#a3bcd0';
+  ctx.fillRect(snakePart.x, snakePart.y, 10, 10);
+}
+function move_snake() {
+  // Create the new Snake's head
+  const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+  // Add the new head to the beginning of snake body
+  snake.unshift(head);
+  
+  let has_eaten_food = false;
+  for (let i = 0; i < allFood.length; i++) {
+    const food = allFood[i];
+    if (snake[0].x === food.x && snake[0].y === food.y) {
+      has_eaten_food = true
+      // TODO activate tracker with the food's type
+      // remove the food
+      allFood.splice(i, 1)
+      // early termination (important!)
+      break;
+    }
+  }
+  if (has_eaten_food) {
+    // Increase score
+    score += 10;
+    // Display score on screen
+    document.getElementById('score').innerHTML = score;
+    // Generate new food location
+    gen_food();
+  } else {
+    // Remove the last part of snake body. we are walking here!
+    snake.pop();
+  }
+}
+function drawAllFood() {
+  allFood.forEach((food => {
+    ctx.fillStyle = food.color,
+    ctx.fillRect(food.x, food.y, 10, 10);
+    ctx.strokeRect(food.x, food.y, 10, 10);
+  }))
+}
+
+
+document.addEventListener("keydown", change_direction)
+function change_direction(event) {
+  const LEFT_KEY = 37;
+  const RIGHT_KEY = 39;
+  const UP_KEY = 38;
+  const DOWN_KEY = 40;
+      
+  // Prevent the snake from reversing
+    
+  if (changing_direction) return;
+  changing_direction = true;
+  const keyPressed = event.keyCode;
+  const goingUp = dy === -10;
+  const goingDown = dy === 10;
+  const goingRight = dx === 10;
+  const goingLeft = dx === -10;
+  if (keyPressed === LEFT_KEY && !goingRight) {
+    dx = -10;
+    dy = 0;
+  }
+  if (keyPressed === UP_KEY && !goingDown) {
+    dx = 0;
+    dy = -10;
+  }
+  if (keyPressed === RIGHT_KEY && !goingLeft) {
+    dx = 10;
+    dy = 0;
+  }
+  if (keyPressed === DOWN_KEY && !goingUp) {
+    dx = 0;
+    dy = 10;
+  }
+}
+
+function has_game_ended() {
+  for (let i = 4; i < snake.length; i++) {
+    if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) return true
+  }
+  const hitLeftWall = snake[0].x < 0;
+  const hitRightWall = snake[0].x > canvas.width - 10;
+  const hitToptWall = snake[0].y < 0;
+  const hitBottomWall = snake[0].y > canvas.height - 10;
+  return hitLeftWall || hitRightWall || hitToptWall || hitBottomWall
+}
+
+function random_food(min, max) {
+  return Math.round((Math.random() * (max-min) + min) / 10) * 10;
+}
+
+function gen_food() {
+  // Generate random food pos
+  let food_x = random_food(0, canvas.width - 10);
+  let food_y = random_food(0, canvas.height - 10);
+  // if the new food location is where the snake currently is, generate a new food location
+  let blocked = false
+  snake.forEach(function has_snake_eaten_food(part) {
+    blocked = blocked || (part.x == food_x && part.y == food_y);
+  });
+  allFood.forEach(food => {
+    blocked = blocked || (food.x == food_x && food.y == food_y);
+  })
+  if (blocked) return gen_food(); // try again buddy
+  else {
+    // push the food pos into array
+    allFood.push({
+      x: food_x,
+      y: food_y,
+      color: '#f693f0', // TODO change according to type of lick
+    })
+  }
+}
