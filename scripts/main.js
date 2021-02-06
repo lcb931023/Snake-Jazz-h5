@@ -43,7 +43,7 @@ function onBeat (time, index) {
 
 
 Tone.Transport.bpm.value = 140;
-Tone.Transport.swing = .3; // this actually can't be too high. 0.3 is a good triplet feel
+Tone.Transport.swing = .3; // this actually can't be too high. right now is a good triplet feel
 Tone.Transport.swingSubdivision = "8n";
 Tone.loaded().then(() => {
   console.log("loaded!");
@@ -88,8 +88,9 @@ function convertLine(line) {
   return spacedLine;
 }
 
-// TEST
-function addRandomLine(collection) {
+function addRandomLine(lineTypeName) {
+  const collection = LineBank[lineTypeName]
+  if (!collection) throw new Error("Line type not found", lineTypeName)
   const line = collection[ Math.floor(Math.random() * collection.length) ]
   console.log(line)
   addLine(line)
@@ -179,7 +180,8 @@ function move_snake() {
     const food = allFood[i];
     if (snake[0].x === food.x && snake[0].y === food.y) {
       has_eaten_food = true
-      // TODO activate tracker with the food's type
+      // add the food's corresponding line type to tracker
+      addRandomLine(food.type)
       // remove the food
       allFood.splice(i, 1)
       // early termination (important!)
@@ -202,7 +204,6 @@ function drawAllFood() {
   allFood.forEach((food => {
     ctx.fillStyle = food.color,
     ctx.fillRect(food.x, food.y, 10, 10);
-    ctx.strokeRect(food.x, food.y, 10, 10);
   }))
 }
 
@@ -270,11 +271,14 @@ function gen_food() {
   })
   if (blocked) return gen_food(); // try again buddy
   else {
+    const typeOfLine = LineBankGroups[Math.floor(Math.random() * LineBankGroups.length)]
+
     // push the food pos into array
     allFood.push({
       x: food_x,
       y: food_y,
-      color: '#f693f0', // TODO change according to type of lick
+      type : typeOfLine[0],
+      color: typeOfLine[1],
     })
   }
 }

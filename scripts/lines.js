@@ -163,6 +163,31 @@ const Rests = [
 /// NOTE: 8t 8t 8t == 8n 8n == 4n
 
 
+const LineBank = {
+  LongBluesLicks,
+  ShortBluesLicks,
+  ShortLicks,
+  Turnarounds,
+  ReversedShortBluesLicks,
+  ReversedTurnarounds,
+  UpwardArpeggios,
+  UpwardRuns,
+  DownwardArpeggios,
+  DownwardRuns,
+  Rests,
+}
 
-
-
+// FIXME bad naming
+const LineBankGroups = [
+  ["LongBluesLicks", "#147eff"],
+  ["ShortBluesLicks", "#3ba7f6"],
+  ["ReversedShortBluesLicks", "#3ba7f6"],
+  ["Turnarounds", "#45699f"],
+  ["ReversedTurnarounds", "#45699f"],
+  ["ShortLicks", "#f69393"],
+  ["UpwardArpeggios", "#f693f0"],
+  ["UpwardRuns", "#f6dc93"],
+  ["DownwardArpeggios", "#f693f0"],
+  ["DownwardRuns", "#f6dc93"],
+  ["Rests", "#999999"],
+]
