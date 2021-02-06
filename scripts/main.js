@@ -15,25 +15,29 @@ const sequencer = new Tone.Sequence(
 
 let beatCounter = 0
 
-function onBeat (time, index) {
+function onBeat (time, beatIndex) {
   // Control game rendering timing
   Tone.Draw.schedule(function(){
     gameLoop()
   }, time)
 
-  // TODO handle situation when the tracker has more than 64 beats
+  // when the tracker has more than 64 beats,
+  // skip the first 64 beats and play the rest,
+  // and so on.
+  let trackerIndex = beatIndex;
+  if (tracker.length > TRACKER_LENGTH) trackerIndex = beatIndex + Math.floor((tracker.length-1)/TRACKER_LENGTH) * 64;
   
-  beatCounter ++; // the number of 16n notes played so far. Starts with 1
   // interpret lines in the tracker
-  const note = tracker[index]
+  const note = tracker[trackerIndex]
   if (!note) return
   if (!note[0]) return
   let pitch = note[0]
   const duration = note[1]
   // emphasize odd 8th notes
-  const velocity = (index % 4 == 2 || index % 4 == 3) ? 0.6:1
+  const velocity = (beatIndex % 4 == 2 || beatIndex % 4 == 3) ? 0.6:1
   // shift the pitch for that 8 measures of E-11 chord
   // TODO algorify magic math
+  beatCounter ++; // the number of 16n notes played so far. Starts with 1
   const measurePosition = beatCounter % (16*32)
   if (measurePosition > (16*16) && measurePosition <= (16*24)) {
     pitch = Tone.Frequency(pitch).transpose(1);

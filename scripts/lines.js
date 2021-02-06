@@ -163,6 +163,8 @@ const Rests = [
 /// NOTE: 8t 8t 8t == 8n 8n == 4n
 
 
+// NOTE : with the looping shifting, no need for rest blocks
+
 const LineBank = {
   LongBluesLicks,
   ShortBluesLicks,
