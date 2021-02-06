@@ -11,13 +11,13 @@ function onBeat (time, index) {
   const note = tracker[index]
   if (!note) return
   if (!note[0]) return
-  piano.triggerAttackRelease(note[0], note[1])
-  console.log(time, note)
+  const velocity = (index % 4 == 2 || index % 4 == 3) ? 0.6:1
+  piano.triggerAttackRelease(note[0], note[1], time, velocity)
 };
 
 
-Tone.Transport.bpm.value = 140;
-Tone.Transport.swing = 1;
+// Tone.Transport.bpm.value = 120;
+Tone.Transport.swing = .3; // this actually can't be too high. 0.3 is a good triplet feel
 Tone.Transport.swingSubdivision = "8n";
 Tone.Transport.start();
 
@@ -75,17 +75,16 @@ const beatMap = {
 
 ////////////// piano
 
-// const piano = new Tone.Sampler({
-// 	urls: {
-// 		A3: "A3v10.ogg",
-// 		A4: "A4v10.ogg",
-// 		A5: "A5v10.ogg",
-// 	},
-// 	baseUrl: "audio/salamander/",
-// 	onload: () => {
-//     console.log("piano sample loaded")
-// 		// piano.triggerAttackRelease(["C4"], "8n");
-// 	}
-// }).toDestination();
+const piano = new Tone.Sampler({
+	urls: {
+		A3: "A3v10.ogg",
+		A4: "A4v10.ogg",
+		A5: "A5v10.ogg",
+	},
+	baseUrl: "audio/salamander/",
+	onload: () => {
+    console.log("piano sample loaded")
+	}
+}).toDestination();
 
-const piano = new Tone.Synth().toDestination();
+// const piano = new Tone.Synth().toDestination();
