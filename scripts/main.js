@@ -1,4 +1,4 @@
-const TRACKER_LENGTH = 64;
+const TRACKER_LENGTH = 32;
 
 const backingTrack = new Tone.Player("audio/backing/so-what-32m.mp3").toDestination();
 backingTrack.volume.value = -9
@@ -27,7 +27,7 @@ function onBeat (time, beatIndex) {
   // skip the first 64 beats and play the rest,
   // and so on.
   let trackerIndex = beatIndex;
-  if (tracker.length > TRACKER_LENGTH) trackerIndex = beatIndex + Math.floor((tracker.length-1)/TRACKER_LENGTH) * 64;
+  if (tracker.length > TRACKER_LENGTH) trackerIndex = beatIndex + Math.floor((tracker.length-1)/TRACKER_LENGTH) * TRACKER_LENGTH;
   
   // interpret lines in the tracker
   const note = tracker[trackerIndex]
@@ -157,10 +157,13 @@ let dx = 10;
 // Vertical velocity
 let dy = 0;
 
-gen_food()
-gen_food()
-gen_food()
-gen_food()
+const FOOD_COUNT = 10
+
+for (let index = 0; index < FOOD_COUNT; index++) {
+  gen_food()
+  
+}
+
 function gameLoop() {
   if (has_game_ended()) return;
 
