@@ -66,7 +66,8 @@ let tracker = []
  */
 function addLine(line) {
   tracker = tracker.concat(convertLine(line))
-  // There's a chance that we add a rest
+  // when snake is young, we add rests sometimes
+  if (snake.length > 20) return
   if (Math.random() < 0.5) {
     const rest = Rests[ Math.floor(Math.random() * Rests.length) ]
     tracker = tracker.concat(convertLine(rest))
