@@ -21,6 +21,8 @@ function onBeat (time, beatIndex) {
     gameLoop()
   }, time)
 
+  beatCounter ++; // the number of 16n notes played so far. Starts with 1
+
   // when the tracker has more than 64 beats,
   // skip the first 64 beats and play the rest,
   // and so on.
@@ -37,7 +39,6 @@ function onBeat (time, beatIndex) {
   const velocity = (beatIndex % 4 == 2 || beatIndex % 4 == 3) ? 0.6:1
   // shift the pitch for that 8 measures of E-11 chord
   // TODO algorify magic math
-  beatCounter ++; // the number of 16n notes played so far. Starts with 1
   const measurePosition = beatCounter % (16*32)
   if (measurePosition > (16*16) && measurePosition <= (16*24)) {
     pitch = Tone.Frequency(pitch).transpose(1);
