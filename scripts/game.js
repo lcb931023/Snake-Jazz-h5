@@ -1,11 +1,13 @@
 
 
 const game = {
+  initialized: false,
   state: {
     allFood: [],
     allSnake: [],
   },
   init() {
+    if (this.initialized) return
     // initialize webaudio with a user interaction
     Tone.start();
     // prep
@@ -13,12 +15,15 @@ const game = {
     this.reset();
     // start rendering
     requestAnimationFrame(()=>this.animate())
+    this.initialized = true
   },
   animate() {
     renderer.render(this.state)
     requestAnimationFrame(()=>this.animate())
   },
   start() {
+    game.reset()
+
     for (let index = 0; index < FOOD_COUNT; index++) {
       dispenser.spawnFood()
     }
@@ -39,10 +44,6 @@ const game = {
   },
   gameover() {
     // TODO
-  },
-  restart() {
-    game.reset()
-    game.start()
   },
   reset() {
     // reset audio setting
