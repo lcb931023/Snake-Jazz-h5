@@ -1,8 +1,9 @@
 // PARAMETERS
-const SNAKE_SPAWN_LENGTH = 5
 const GRID_SIZE = 10
 
+const SNAKE_SPAWN_LENGTH = 5
 const TRACKER_LENGTH = 32
+const FOOD_COUNT = 50
 
 const canvas = document.getElementById("canvas")
 
@@ -25,7 +26,6 @@ const piano = new Tone.Sampler({
     console.log("piano sample loaded")
 	}
 }).toDestination();
-
 
 // sequencer keeps time and triggers playing each beat
 const sequencer = new Tone.Sequence(
@@ -79,7 +79,7 @@ Tone.loaded().then(() => {
 })
 
 // Control
-// TODO open this up for more than 2 snakes... ?
+// NOTE open this up for more than 2 snakes... ?
 document.addEventListener("keydown", (event) => {
   // key.code for each player. 
   // the array position corresponds to direction: up, left, down, right

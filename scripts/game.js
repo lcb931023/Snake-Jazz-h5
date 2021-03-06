@@ -19,6 +19,10 @@ const game = {
     requestAnimationFrame(()=>this.animate())
   },
   start() {
+    for (let index = 0; index < FOOD_COUNT; index++) {
+      dispenser.spawnFood()
+    }
+    
     this.state.allSnake.forEach(snake => snake.spawn())
     // start music
     Tone.Transport.start();
@@ -27,7 +31,6 @@ const game = {
    * Step forward the game; move the snake and check food status
    */
   step(beatIndex) {
-    console.log("step", beatIndex)
     // TODO
     // move snake
     this.state.allSnake.forEach(snake => {
