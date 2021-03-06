@@ -18,6 +18,7 @@ class Snake {
     this.dx = 10
     this.dy = 0
     this.direction = 3 // right
+    this.isDead = false // Peldaro Morghulis
     this.reset()
   }
   reset() {
@@ -25,6 +26,7 @@ class Snake {
     this.dx = 10
     this.dy = 0
     this.score = 0
+    document.getElementById(`score-${this.id}`).innerHTML = this.score;
     // reset the palette; fill it with the snake's color
     this.arrPalette.length = SNAKE_SPAWN_LENGTH
     this.arrPalette.fill(this.color)
@@ -39,6 +41,7 @@ class Snake {
     }
   }
   move() {
+    if (this.isDead) return;
     // apply direction
     this.applyTurn()
     // Create the new Snake's head
@@ -72,6 +75,7 @@ class Snake {
       this.arrBody.pop();
     }
 
+    if (this.checkIfDead()) this.isDead = true
   }
   // Directions: up, left, down, right
   turn(inputDir) {
@@ -138,6 +142,34 @@ class Snake {
       const rest = Rests[ Math.floor(Math.random() * Rests.length) ]
       this.tracker = this.tracker.concat(convertLine(rest))
     }
+  }
+  checkIfDead() {
+    const headX = this.arrBody[0].x
+    const headY = this.arrBody[0].y
+    // Check for hitting wall
+    const hitLeftWall = headX < 0;
+    const hitRightWall = headX > canvas.width - 10;
+    const hitToptWall = headY < 0;
+    const hitBottomWall = headY > canvas.height - 10;
+    if (hitLeftWall || hitRightWall || hitToptWall || hitBottomWall) return true
+    // Check for hitting self
+    for (let i = SNAKE_SPAWN_LENGTH - 1; i < this.arrBody.length; i++) {
+      if (this.arrBody[i].x === headX && 
+        this.arrBody[i].y === headY) return true
+    }
+    // Check for hitting the other snake
+    // TODO improve performance for this function; one array every new step is not ideal.
+    // at least it's a good thing we have shallow reference in JS, eh?
+    const arrOtherSnake = game.state.allSnake.filter(snake => snake.id !== this.id)
+    for (let i = 0; i < arrOtherSnake.length; i++) {
+      const snake = arrOtherSnake[i];
+      for (let j = 0; j < snake.arrBody.length; j++) {
+        const body = snake.arrBody[j];
+        if (body.x == headX && body.y == headY) return true
+      }
+    }
+
+    return false
   }
 }
 

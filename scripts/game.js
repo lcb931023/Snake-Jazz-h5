@@ -38,7 +38,11 @@ const game = {
     });
   },
   gameover() {
-
+    // TODO
+  },
+  restart() {
+    game.reset()
+    game.start()
   },
   reset() {
     // reset audio setting
