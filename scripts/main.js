@@ -13,8 +13,16 @@ const sequencer = new Tone.Sequence(
   new Array(TRACKER_LENGTH).fill().map((x,i) => i), // [0,1,2,3,4,5...
   "16n").start(0);
 
+// use beat counter to determine where we are in a song.
+// and modulate accordingly
 let beatCounter = 0
 
+/**
+ * Step sequencer runs this every beat.
+ * We use it to play the piano note in the tracker, if any.
+ * @param {Number} time precise timing info given by Tone
+ * @param {Number} beatIndex which beat of the sequence are we at now
+ */
 function onBeat (time, beatIndex) {
   // Control game rendering timing
   Tone.Draw.schedule(function(){
@@ -38,6 +46,7 @@ function onBeat (time, beatIndex) {
   // emphasize odd 8th notes
   const velocity = (beatIndex % 4 == 2 || beatIndex % 4 == 3) ? 0.6:1
   // shift the pitch for that 8 measures of E-11 chord
+  // in So What
   // TODO algorify magic math
   const measurePosition = beatCounter % (16*32)
   if (measurePosition > (16*16) && measurePosition <= (16*24)) {

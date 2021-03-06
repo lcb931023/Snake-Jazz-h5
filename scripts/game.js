@@ -1,15 +1,4 @@
-const backingTrack = new Tone.Player("audio/backing/so-what-32m.mp3").toDestination();
-backingTrack.volume.value = -9
-const backingLoop = new Tone.Loop(time => {
-  console.log("playing backing track");
-  backingTrack.start();
-}, "32m").start(0);
 
-Tone.loaded().then(() => {
-  console.log("All audio buffers loaded!");
-  // TODO this is where the screen goes from "loading..." to "Loaded!",
-  // and we goad the user to click on screen to start (game.init())
-})
 
 const game = {
   state: {
@@ -22,11 +11,28 @@ const game = {
     // prep
     renderer.init(canvas)
     this.reset();
+    // start rendering
+    requestAnimationFrame(()=>this.animate())
+  },
+  animate() {
+    renderer.render(this.state)
+    requestAnimationFrame(()=>this.animate())
   },
   start() {
-    // start backing track
-    Tone.Transport.start();
     this.state.allSnake.forEach(snake => snake.spawn())
+    // start music
+    Tone.Transport.start();
+  },
+  /**
+   * Step forward the game; move the snake and check food status
+   */
+  step(beatIndex) {
+    console.log("step", beatIndex)
+    // TODO
+    // move snake
+    this.state.allSnake.forEach(snake => {
+      snake.move()
+    });
   },
   gameover() {
 
@@ -40,7 +46,7 @@ const game = {
     // reset game state
     this.state.allFood.length = 0
     this.state.allSnake.length = 0
-    this.state.allSnake.push(new Snake("#dd4a68", 100, 100))
-    this.state.allSnake.push(new Snake("#00458b", 100, 300))
+    this.state.allSnake.push(new Snake("1", "#dd4a68", 100, 100))
+    this.state.allSnake.push(new Snake("2", "#00458b", 100, 300))
   },
 }
