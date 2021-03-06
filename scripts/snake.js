@@ -77,7 +77,10 @@ class Snake {
 
     if (this.checkIfDead()) this.isDead = true
   }
-  // Directions: up, left, down, right
+  /**
+   * record the turning direction from input, if appropriate.
+   * @param {Number} inputDir up, left, down, right - 0, 1, 2, 3
+   */
   turn(inputDir) {
 
     const goingUp = this.dy === -10;
