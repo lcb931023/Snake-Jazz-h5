@@ -1,6 +1,6 @@
 gameControl.on('connect', gamepad => {
   console.log('gamepad connected!', gamepad);
-
+  gamepad.axeThreshold = [.8]
   // start
   gamepad.after('button9', ()=>{
     if (game.initialized) game.start()
