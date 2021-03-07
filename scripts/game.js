@@ -54,7 +54,7 @@ const game = {
     // reset game state
     this.state.allFood.length = 0
     this.state.allSnake.length = 0
-    this.state.allSnake.push(new Snake("1", "#dd4a68", 100, 100))
-    this.state.allSnake.push(new Snake("2", "#00458b", 100, 300))
+    this.state.allSnake.push(new Snake("1", "#dd4a68", 100, 300))
+    this.state.allSnake.push(new Snake("2", "#00458b", 300, 300))
   },
 }

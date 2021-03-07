@@ -14,17 +14,15 @@ class Snake {
     this.arrPalette = []
     // musical notes registry
     this.tracker = []
-    // movement
-    this.dx = 10
-    this.dy = 0
-    this.direction = 3 // right
-    this.isDead = false // Peldaro Morghulis
     this.reset()
   }
   reset() {
     this.arrBody.length = 0
-    this.dx = 10
-    this.dy = 0
+    // movement
+    this.dx = 0
+    this.dy = -10
+    this.direction = 0 // up
+    this.isDead = false // Peldaro Morghulis
     this.score = 0
     document.getElementById(`score-${this.id}`).innerHTML = this.score;
     // reset the palette; fill it with the snake's color
@@ -35,8 +33,8 @@ class Snake {
   spawn() {
     for (let i = 0; i < SNAKE_SPAWN_LENGTH; i++) {
       this.arrBody.push({
-        x: this.spawnX - GRID_SIZE * i,
-        y: this.spawnY
+        x: this.spawnX,
+        y: this.spawnY + GRID_SIZE * i
       })
     }
   }
