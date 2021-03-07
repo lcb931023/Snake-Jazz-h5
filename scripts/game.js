@@ -11,7 +11,7 @@ const game = {
     // initialize webaudio with a user interaction
     Tone.start();
     // prep
-    renderer.init(canvas)
+    // renderer.init(canvas)
     this.reset();
     // start rendering
     requestAnimationFrame(()=>this.animate())
@@ -22,6 +22,7 @@ const game = {
     requestAnimationFrame(()=>this.animate())
   },
   start() {
+    document.querySelector('.subtitle').style.opacity = 0;
     game.reset()
 
     for (let index = 0; index < FOOD_COUNT; index++) {
@@ -43,10 +44,12 @@ const game = {
     });
   },
   gameover() {
-    // TODO
+    Tone.getDestination().volume.rampTo(-Infinity, 10);
+    document.querySelector('.subtitle').style.opacity = 1;
   },
   reset() {
     // reset audio setting
+    Tone.getDestination().volume.value = 0;
     Tone.Transport.bpm.value = 140;
     Tone.Transport.swing = .3; // this actually can't be too high. right now is a good triplet feel
     Tone.Transport.swingSubdivision = "8n";
@@ -56,7 +59,7 @@ const game = {
     this.state.allSnake.length = 0
     // left and right snake. use different pianos
     const snakeLeft = new Snake("1", "#dd4a68", 100, 300)
-    const snakeRight = new Snake("2", "#00458b", 300, 300)
+    const snakeRight = new Snake("2", "#22cfa4", 300, 300)
     // HACK this assign is weird and bad, need better form
     snakeLeft.piano = pianoLeft
     snakeRight.piano = pianoRight

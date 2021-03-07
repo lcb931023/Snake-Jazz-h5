@@ -1,8 +1,4 @@
 const renderer = {
-  init(canvas) {
-    this.canvas = canvas
-    this.ctx = canvas.getContext("2d")
-  },
   render(state) {
     // clear board with the background
     this.ctx.fillStyle = "#32304c"

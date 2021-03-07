@@ -10,24 +10,60 @@
       color: #eeebe6;
 
     }
-    #canvas {
+    #canvas, .canvas-cover {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+    }
+    #canvas {
       border: 10px solid #eeebe6;
+    }
+    .ui {
+      margin-top: 40px;
+    }
+    .title, .subtitle {
+      display: flex;
+      justify-content: center;
+    }
+    .subtitle {
+      margin-top: 20px;
+      opacity: 0;
+    }
+    .score {
+      display: flex;
+      width: 400px;
+      position: absolute;
+      top: 600px;
+      left: 50%;
+      transform: translate(-50%, 0%);
+      justify-content: space-between;
+      font-family: "PhrasticMedium", fantasy;
+      font-size: 30px;
     }
   </style>
 </head>
 <body>
   
-  <!-- <button onclick="console.log('lets go baby girl');Tone.start()">Start</button> -->
-  <button onclick="game.init()">Init Game</button>
-  <button onclick="game.start()">Start</button>
-  <!-- TODO make this score part better -->
-  <div id="score-1">0</div>
-  <div id="score-2">0</div>
+  <div class="ui">
+    <div class="title">
+      <img src="images/SNAKEJAZZ.png" alt="">
+    </div>
+    <div class="subtitle">
+      <img src="images/space-to-start.png" alt="">
+    </div>
+    <div class="score">
+      <div id="score-1" style="color: #dd4a68">0</div>
+      <div id="score-2" style="color: #22cfa4">0</div>
+      <!-- TODO make this score part better -->
+    </div>
+  </div>
   <canvas id="canvas" width="400" height="400"></canvas>
+  <div class="canvas-cover">
+    <img src="images/playBtn.png" alt="" onclick="game.init(); this.style.display = 'none'; document.querySelector('.subtitle').style.opacity = 1;">
+  </div>
+  <!-- <button onclick="game.init()">Init Game</button>
+  <button onclick="game.start()">Start</button> -->
 
   <script src="scripts/lib/Tone.js"></script>
   <script src="scripts/lib/gamecontroller.js"></script>

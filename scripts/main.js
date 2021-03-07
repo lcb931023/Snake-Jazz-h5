@@ -6,7 +6,8 @@ const TRACKER_LENGTH = 32
 const FOOD_COUNT = 50
 
 const canvas = document.getElementById("canvas")
-
+renderer.canvas = canvas
+renderer.ctx = canvas.getContext("2d")
 const backingTrack = new Tone.Player("audio/backing/so-what-32m.mp3").toDestination();
 backingTrack.volume.value = -4
 const backingLoop = new Tone.Loop(time => {
@@ -94,14 +95,21 @@ Tone.loaded().then(() => {
 })
 
 // Control
+
+document.addEventListener("keyup", (event) => {
+  // start / restart
+  if (event.code === "Space") game.start();
+})
+
 // NOTE open this up for more than 2 snakes... ?
 document.addEventListener("keydown", (event) => {
+  const keyPressed = event.code
+
   // key.code for each player. 
   // the array position corresponds to direction: up, left, down, right
   const p1Control = ["KeyW", "KeyA", "KeyS", "KeyD"]
   const p2Control = ["ArrowUp", "ArrowLeft", "ArrowDown", "ArrowRight"]
 
-  const keyPressed = event.code
 
   const p1Direction = p1Control.indexOf(keyPressed)
   if (p1Direction !== -1) game.state.allSnake[0].turn(p1Direction)
