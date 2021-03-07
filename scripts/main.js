@@ -17,8 +17,11 @@ const backingLoop = new Tone.Loop(time => {
 
 // Piano plays the snake sounds
 // one for left and one for right
-const panVolLeft = new Tone.PanVol(-1, 12).toDestination()
-const panVolRight = new Tone.PanVol(1, 12).toDestination()
+const panVolLeft = new Tone.PanVol(-1, 12)
+const panVolRight = new Tone.PanVol(1, 14)
+const filterLeft = new Tone.Filter(500, "lowpass");
+const filterRight = new Tone.Filter(1200, "highpass");
+
 const pianoLeft = new Tone.Sampler({
 	urls: {
 		A3: "A3v10.ogg",
@@ -29,7 +32,10 @@ const pianoLeft = new Tone.Sampler({
 	onload: () => {
     console.log("pianoLeft sample loaded")
 	}
-}).connect(panVolLeft);
+})
+// }).connect(filterLeft).connect(panVolLeft);
+
+pianoLeft.chain(filterLeft, panVolLeft, Tone.Destination)
 
 const pianoRight = new Tone.Sampler({
 	urls: {
@@ -41,7 +47,9 @@ const pianoRight = new Tone.Sampler({
 	onload: () => {
     console.log("pianoRight sample loaded")
 	}
-}).connect(panVolRight);
+})
+
+pianoRight.chain(filterRight, panVolRight, Tone.Destination)
 
 // sequencer keeps time and triggers playing each beat
 const sequencer = new Tone.Sequence(
