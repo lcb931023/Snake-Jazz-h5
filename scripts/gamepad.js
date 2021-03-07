@@ -40,4 +40,9 @@ gameControl.on('connect', gamepad => {
     if (! game.initialized) return
     game.state.allSnake[gamepad.id].turn(3)
   })
+
+  // clear tracker when press x
+  gamepad.before('button2', ()=>{
+    game.state.allSnake[gamepad.id].tracker.length = 0
+  })
 })

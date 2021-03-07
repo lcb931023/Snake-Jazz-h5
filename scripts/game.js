@@ -37,11 +37,13 @@ const game = {
    * Step forward the game; move the snake and check food status
    */
   step(beatIndex) {
-    // TODO
     // move snake
     this.state.allSnake.forEach(snake => {
       snake.move()
     });
+    // check for game over
+    let allDead = this.state.allSnake.every(snake => snake.isDead === true)
+    if (allDead) this.gameover()
   },
   gameover() {
     Tone.getDestination().volume.rampTo(-Infinity, 10);

@@ -73,7 +73,11 @@ class Snake {
       this.arrBody.pop();
     }
 
-    if (this.checkIfDead()) this.isDead = true
+    if (this.checkIfDead()) this.die()
+  }
+  die() {
+    this.isDead = true
+    this.tracker.length = 0
   }
   /**
    * record the turning direction from input, if appropriate.

@@ -90,8 +90,7 @@ function onBeat (time, beatIndex) {
 
 Tone.loaded().then(() => {
   console.log("All audio buffers loaded!");
-  // TODO this is where the screen goes from "loading..." to "Loaded!",
-  // and we goad the user to click on screen to start (game.init())
+  document.querySelector(".canvas-cover").style.display = "inherit"
 })
 
 // Control
