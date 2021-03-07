@@ -8,14 +8,17 @@ const FOOD_COUNT = 50
 const canvas = document.getElementById("canvas")
 
 const backingTrack = new Tone.Player("audio/backing/so-what-32m.mp3").toDestination();
-backingTrack.volume.value = -9
+backingTrack.volume.value = -4
 const backingLoop = new Tone.Loop(time => {
   console.log("playing backing track");
   backingTrack.start();
 }, "32m").start(0);
 
 // Piano plays the snake sounds
-const piano = new Tone.Sampler({
+// one for left and one for right
+const panVolLeft = new Tone.PanVol(-1, 12).toDestination()
+const panVolRight = new Tone.PanVol(1, 12).toDestination()
+const pianoLeft = new Tone.Sampler({
 	urls: {
 		A3: "A3v10.ogg",
 		A4: "A4v10.ogg",
@@ -23,9 +26,21 @@ const piano = new Tone.Sampler({
 	},
 	baseUrl: "audio/salamander/",
 	onload: () => {
-    console.log("piano sample loaded")
+    console.log("pianoLeft sample loaded")
 	}
-}).toDestination();
+}).connect(panVolLeft);
+
+const pianoRight = new Tone.Sampler({
+	urls: {
+		A3: "A3v10.ogg",
+		A4: "A4v10.ogg",
+		A5: "A5v10.ogg",
+	},
+	baseUrl: "audio/salamander/",
+	onload: () => {
+    console.log("pianoRight sample loaded")
+	}
+}).connect(panVolRight);
 
 // sequencer keeps time and triggers playing each beat
 const sequencer = new Tone.Sequence(
@@ -68,7 +83,7 @@ function onBeat (time, beatIndex) {
     if (measurePosition > (16*16) && measurePosition <= (16*24)) {
       pitch = Tone.Frequency(pitch).transpose(1);
     }
-    piano.triggerAttackRelease(pitch, duration, time, velocity)
+    snake.piano.triggerAttackRelease(pitch, duration, time, velocity)
   })
 };
 

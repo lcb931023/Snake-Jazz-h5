@@ -54,7 +54,13 @@ const game = {
     // reset game state
     this.state.allFood.length = 0
     this.state.allSnake.length = 0
-    this.state.allSnake.push(new Snake("1", "#dd4a68", 100, 300))
-    this.state.allSnake.push(new Snake("2", "#00458b", 300, 300))
+    // left and right snake. use different pianos
+    const snakeLeft = new Snake("1", "#dd4a68", 100, 300)
+    const snakeRight = new Snake("2", "#00458b", 300, 300)
+    // HACK this assign is weird and bad, need better form
+    snakeLeft.piano = pianoLeft
+    snakeRight.piano = pianoRight
+    this.state.allSnake.push(snakeLeft)
+    this.state.allSnake.push(snakeRight)
   },
 }
